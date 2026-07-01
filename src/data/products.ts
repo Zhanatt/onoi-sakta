@@ -550,7 +550,7 @@ export const products: Product[] = [
   {
     id: 'cold-rolled',
     category: 'home',
-    images: ['image63.jpeg', 'image68.jpeg'],
+    images: ['image65.jpeg', 'image68.jpeg'],
     translations: {
       ru: {
         name: 'Полочный стеллаж из холоднокатаной стали',
