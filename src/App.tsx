@@ -9,6 +9,62 @@ function App() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [language, setLanguage] = useState<Language>('ru');
   const [langMenuOpen, setLangMenuOpen] = useState(false);
+  const [showContactForm, setShowContactForm] = useState(false);
+  const [formData, setFormData] = useState({ name: '', phone: '', city: '' });
+  const [formStatus, setFormStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
+
+  const BITRIX_WEBHOOK = 'https://matkasymov.bitrix24.kz/rest/153247/f6im0fosfryl5qn3/';
+
+  const handleSubmitForm = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!selectedProduct) return;
+
+    setFormStatus('sending');
+
+    const productName = getProductTranslation(selectedProduct).name;
+
+    try {
+      const response = await fetch(`${BITRIX_WEBHOOK}crm.deal.add`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          fields: {
+            TITLE: `ONOI SAKTA: ${formData.name} - ${productName}`,
+            CATEGORY_ID: 43,
+            STAGE_ID: 'C43:NEW',
+            SOURCE_ID: 'WEB',
+            SOURCE_DESCRIPTION: 'Сайт ONOI SAKTA',
+            COMMENTS: `Интерес: ${productName}\nГород: ${formData.city}`,
+            CONTACT: {
+              NAME: formData.name,
+              PHONE: [{ VALUE: formData.phone, VALUE_TYPE: 'WORK' }]
+            }
+          }
+        })
+      });
+
+      const data = await response.json();
+
+      if (data.result) {
+        setFormStatus('success');
+        setFormData({ name: '', phone: '', city: '' });
+        setTimeout(() => {
+          setShowContactForm(false);
+          setFormStatus('idle');
+        }, 2000);
+      } else {
+        setFormStatus('error');
+      }
+    } catch (error) {
+      console.error('Bitrix24 error:', error);
+      setFormStatus('error');
+    }
+  };
+
+  const openContactForm = () => {
+    setShowContactForm(true);
+    setFormStatus('idle');
+  };
 
   const t = translations[language];
 
@@ -219,9 +275,75 @@ function App() {
                   </div>
                 </div>
 
-                <button className="contact-btn">{t.requestPrice}</button>
+                <button className="contact-btn" onClick={openContactForm}>{t.requestPrice}</button>
               </div>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Contact Form Modal */}
+      {showContactForm && selectedProduct && (
+        <div className="modal-overlay" onClick={() => setShowContactForm(false)}>
+          <div className="contact-modal" onClick={e => e.stopPropagation()}>
+            <button className="modal-close" onClick={() => setShowContactForm(false)}>×</button>
+
+            <h3>{t.requestPrice}</h3>
+            <p className="contact-product-name">{getProductTranslation(selectedProduct).name}</p>
+
+            {formStatus === 'success' ? (
+              <div className="form-success">
+                <span className="success-icon">✓</span>
+                <p>{t.formSuccess || 'Заявка отправлена! Мы свяжемся с вами в ближайшее время.'}</p>
+              </div>
+            ) : (
+              <form onSubmit={handleSubmitForm} className="contact-form">
+                <div className="form-group">
+                  <label>{t.formName || 'Ваше имя'}</label>
+                  <input
+                    type="text"
+                    required
+                    value={formData.name}
+                    onChange={e => setFormData({ ...formData, name: e.target.value })}
+                    placeholder={t.formNamePlaceholder || 'Введите имя'}
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label>{t.formPhone || 'Телефон'}</label>
+                  <input
+                    type="tel"
+                    required
+                    value={formData.phone}
+                    onChange={e => setFormData({ ...formData, phone: e.target.value })}
+                    placeholder="+996 XXX XXX XXX"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label>{t.formCity || 'Город'}</label>
+                  <input
+                    type="text"
+                    required
+                    value={formData.city}
+                    onChange={e => setFormData({ ...formData, city: e.target.value })}
+                    placeholder={t.formCityPlaceholder || 'Откуда вы?'}
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  className="submit-btn"
+                  disabled={formStatus === 'sending'}
+                >
+                  {formStatus === 'sending' ? (t.formSending || 'Отправка...') : (t.formSubmit || 'Отправить заявку')}
+                </button>
+
+                {formStatus === 'error' && (
+                  <p className="form-error">{t.formError || 'Ошибка отправки. Попробуйте позже.'}</p>
+                )}
+              </form>
+            )}
           </div>
         </div>
       )}

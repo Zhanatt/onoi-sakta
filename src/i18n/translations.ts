@@ -29,6 +29,15 @@ export const translations: Record<Language, {
   continuousImprovement: string;
   workEfficiently: string;
   copyright: string;
+  formName: string;
+  formNamePlaceholder: string;
+  formPhone: string;
+  formCity: string;
+  formCityPlaceholder: string;
+  formSubmit: string;
+  formSending: string;
+  formSuccess: string;
+  formError: string;
 }> = {
   ru: {
     heroSubtitle: 'Каталог стеллажного оборудования',
@@ -52,6 +61,15 @@ export const translations: Record<Language, {
     continuousImprovement: 'Непрерывное совершенствование',
     workEfficiently: 'Работаем без лишних потерь',
     copyright: '© 2024 ONOI SAKTA by MATKASYM. Все права защищены.',
+    formName: 'Ваше имя',
+    formNamePlaceholder: 'Введите имя',
+    formPhone: 'Телефон',
+    formCity: 'Город',
+    formCityPlaceholder: 'Откуда вы?',
+    formSubmit: 'Отправить заявку',
+    formSending: 'Отправка...',
+    formSuccess: 'Заявка отправлена! Мы свяжемся с вами в ближайшее время.',
+    formError: 'Ошибка отправки. Попробуйте позже.',
   },
   kk: {
     heroSubtitle: 'Сөре жабдықтарының каталогы',
@@ -75,6 +93,15 @@ export const translations: Record<Language, {
     continuousImprovement: 'Үздіксіз жетілдіру',
     workEfficiently: 'Артық шығынсыз жұмыс істейміз',
     copyright: '© 2024 ONOI SAKTA by MATKASYM. Барлық құқықтар қорғалған.',
+    formName: 'Атыңыз',
+    formNamePlaceholder: 'Атыңызды енгізіңіз',
+    formPhone: 'Телефон',
+    formCity: 'Қала',
+    formCityPlaceholder: 'Қай жерденсіз?',
+    formSubmit: 'Өтінім жіберу',
+    formSending: 'Жіберілуде...',
+    formSuccess: 'Өтінім жіберілді! Жақын арада сізбен байланысамыз.',
+    formError: 'Жіберу қатесі. Кейінірек қайталаңыз.',
   },
   ky: {
     heroSubtitle: 'Текче жабдууларынын каталогу',
@@ -98,6 +125,15 @@ export const translations: Record<Language, {
     continuousImprovement: 'Үзгүлтүксүз өркүндөтүү',
     workEfficiently: 'Ашыкча чыгымсыз иштейбиз',
     copyright: '© 2024 ONOI SAKTA by MATKASYM. Бардык укуктар корголгон.',
+    formName: 'Атыңыз',
+    formNamePlaceholder: 'Атыңызды жазыңыз',
+    formPhone: 'Телефон',
+    formCity: 'Шаар',
+    formCityPlaceholder: 'Кайдансыз?',
+    formSubmit: 'Арызды жөнөтүү',
+    formSending: 'Жөнөтүлүүдө...',
+    formSuccess: 'Арыз жөнөтүлдү! Жакында сиз менен байланышабыз.',
+    formError: 'Жөнөтүү катасы. Кийинчерээк кайталаңыз.',
   },
   en: {
     heroSubtitle: 'Shelving Equipment Catalog',
@@ -121,6 +157,15 @@ export const translations: Record<Language, {
     continuousImprovement: 'Continuous Improvement',
     workEfficiently: 'Working without waste',
     copyright: '© 2024 ONOI SAKTA by MATKASYM. All rights reserved.',
+    formName: 'Your name',
+    formNamePlaceholder: 'Enter your name',
+    formPhone: 'Phone',
+    formCity: 'City',
+    formCityPlaceholder: 'Where are you from?',
+    formSubmit: 'Submit request',
+    formSending: 'Sending...',
+    formSuccess: 'Request sent! We will contact you soon.',
+    formError: 'Sending error. Please try again later.',
   },
 };
 
