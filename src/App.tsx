@@ -32,9 +32,29 @@ function App() {
     setFormStatus('sending');
 
     const productName = getProductTranslation(selectedProduct).name;
+    const fullPhone = `${formData.countryCode}${formData.phone}`;
 
     try {
-      const response = await fetch(`${BITRIX_WEBHOOK}crm.deal.add`, {
+      // 1. Создаём контакт с телефоном
+      const contactRes = await fetch(`${BITRIX_WEBHOOK}crm.contact.add`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          fields: {
+            NAME: formData.name,
+            PHONE: [{ VALUE: fullPhone, VALUE_TYPE: 'MOBILE' }],
+            ADDRESS_CITY: formData.city,
+            SOURCE_ID: 'WEB',
+            SOURCE_DESCRIPTION: 'Сайт ONOI SAKTA',
+            ASSIGNED_BY_ID: 120059,
+          }
+        })
+      });
+      const contactData = await contactRes.json();
+      const contactId = contactData.result;
+
+      // 2. Создаём сделку и привязываем контакт
+      const dealRes = await fetch(`${BITRIX_WEBHOOK}crm.deal.add`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -45,18 +65,15 @@ function App() {
             ASSIGNED_BY_ID: 120059,
             SOURCE_ID: 'WEB',
             SOURCE_DESCRIPTION: 'Сайт ONOI SAKTA',
-            COMMENTS: `Интерес: ${productName}\nГород: ${formData.city}`,
-            CONTACT: {
-              NAME: formData.name,
-              PHONE: [{ VALUE: `${formData.countryCode}${formData.phone}`, VALUE_TYPE: 'WORK' }]
-            }
+            COMMENTS: `📦 Интерес: ${productName}\n📍 Город: ${formData.city}\n📱 WhatsApp: ${fullPhone}`,
+            CONTACT_ID: contactId,
           }
         })
       });
 
-      const data = await response.json();
+      const dealData = await dealRes.json();
 
-      if (data.result) {
+      if (dealData.result) {
         setFormStatus('success');
         setFormData({ name: '', phone: '', city: '', countryCode: '+996' });
         setTimeout(() => {
