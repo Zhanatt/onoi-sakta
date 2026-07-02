@@ -42,6 +42,7 @@ function App() {
             TITLE: `ONOI SAKTA: ${formData.name} - ${productName}`,
             CATEGORY_ID: 43,
             STAGE_ID: 'C43:NEW',
+            ASSIGNED_BY_ID: 120059,
             SOURCE_ID: 'WEB',
             SOURCE_DESCRIPTION: 'Сайт ONOI SAKTA',
             COMMENTS: `Интерес: ${productName}\nГород: ${formData.city}`,
