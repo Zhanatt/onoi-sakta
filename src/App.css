@@ -772,3 +772,51 @@ body {
     font-size: 1rem;
   }
 }
+
+/* Phone input with country selector */
+.phone-input-group {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.country-select {
+  padding: 0.8rem 0.5rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  background: white;
+  cursor: pointer;
+  min-width: 110px;
+  transition: border-color 0.3s;
+}
+
+.country-select:focus {
+  outline: none;
+  border-color: #c62828;
+}
+
+.phone-input {
+  flex: 1;
+  padding: 0.8rem 1rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+}
+
+.phone-input:focus {
+  outline: none;
+  border-color: #c62828;
+}
+
+@media (max-width: 480px) {
+  .country-select {
+    min-width: 95px;
+    padding: 0.7rem 0.4rem;
+    font-size: 0.9rem;
+  }
+
+  .phone-input {
+    padding: 0.7rem 0.8rem;
+  }
+}

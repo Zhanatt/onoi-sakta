@@ -10,8 +10,18 @@ function App() {
   const [language, setLanguage] = useState<Language>('ru');
   const [langMenuOpen, setLangMenuOpen] = useState(false);
   const [showContactForm, setShowContactForm] = useState(false);
-  const [formData, setFormData] = useState({ name: '', phone: '', city: '' });
+  const [formData, setFormData] = useState({ name: '', phone: '', city: '', countryCode: '+996' });
   const [formStatus, setFormStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
+
+  const countryCodes = [
+    { code: '+996', country: '🇰🇬 KG', name: 'Кыргызстан' },
+    { code: '+7', country: '🇰🇿 KZ', name: 'Казахстан' },
+    { code: '+7', country: '🇷🇺 RU', name: 'Россия' },
+    { code: '+998', country: '🇺🇿 UZ', name: 'Узбекистан' },
+    { code: '+992', country: '🇹🇯 TJ', name: 'Таджикистан' },
+    { code: '+993', country: '🇹🇲 TM', name: 'Туркменистан' },
+    { code: '+86', country: '🇨🇳 CN', name: 'Китай' },
+  ];
 
   const BITRIX_WEBHOOK = 'https://matkasymov.bitrix24.kz/rest/153247/f6im0fosfryl5qn3/';
 
@@ -37,7 +47,7 @@ function App() {
             COMMENTS: `Интерес: ${productName}\nГород: ${formData.city}`,
             CONTACT: {
               NAME: formData.name,
-              PHONE: [{ VALUE: formData.phone, VALUE_TYPE: 'WORK' }]
+              PHONE: [{ VALUE: `${formData.countryCode}${formData.phone}`, VALUE_TYPE: 'WORK' }]
             }
           }
         })
@@ -47,7 +57,7 @@ function App() {
 
       if (data.result) {
         setFormStatus('success');
-        setFormData({ name: '', phone: '', city: '' });
+        setFormData({ name: '', phone: '', city: '', countryCode: '+996' });
         setTimeout(() => {
           setShowContactForm(false);
           setFormStatus('idle');
@@ -311,13 +321,25 @@ function App() {
 
                 <div className="form-group">
                   <label>{t.formPhone || 'Телефон'}</label>
-                  <input
-                    type="tel"
-                    required
-                    value={formData.phone}
-                    onChange={e => setFormData({ ...formData, phone: e.target.value })}
-                    placeholder="+996 XXX XXX XXX"
-                  />
+                  <div className="phone-input-group">
+                    <select
+                      value={formData.countryCode}
+                      onChange={e => setFormData({ ...formData, countryCode: e.target.value })}
+                      className="country-select"
+                    >
+                      {countryCodes.map((c, idx) => (
+                        <option key={idx} value={c.code}>{c.country} {c.code}</option>
+                      ))}
+                    </select>
+                    <input
+                      type="tel"
+                      required
+                      value={formData.phone}
+                      onChange={e => setFormData({ ...formData, phone: e.target.value })}
+                      placeholder="XXX XXX XXX"
+                      className="phone-input"
+                    />
+                  </div>
                 </div>
 
                 <div className="form-group">
